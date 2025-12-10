@@ -15,11 +15,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  typos:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: crate-ci/typos@master
+  # typos:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - uses: crate-ci/typos@master
 
   prek:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
 
   test:
     name: Coverage
-    needs: [typos, basedpyright, prek]
+    needs: [basedpyright, prek]
     # runs-on: ${{ matrix.os }}
     runs-on: ubuntu-latest
     permissions:

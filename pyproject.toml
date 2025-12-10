@@ -1,22 +1,24 @@
 [project]
-name = "uv-python-template"
+name = "emosvg"
 version = "0.0.1"
 description = ""
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
-dependencies = []
+dependencies = ["cairosvg>=2.8.2", "emoji>=2.15.0", "pillow>=11.0.0"]
 
 [project.urls]
-Homepage = "https://github.com/fllesser/uv-python-template"
-Issues = "https://github.com/fllesser/uv-python-template/issues"
-Repository = "https://github.com/fllesser/uv-python-template.git"
+Homepage = "https://github.com/fllesser/emosvg"
+Issues = "https://github.com/fllesser/emosvg/issues"
+Repository = "https://github.com/fllesser/emosvg.git"
 
 [dependency-groups]
 dev = [
+  "httpx>=0.28.1, <1.0.0",
   "bump-my-version>=1.2.4",
   "poethepoet>=0.36.0",
   "ruff>=0.14.8,<1.0.0",
+  "apilmoji[tqdm]>=0.2.1",
   { include-group = "test" },
 ]
 test = [
@@ -38,8 +40,8 @@ tag = true
 
 [[tool.bumpversion.files]]
 filename = "uv.lock"
-search = "name = \"uv-python-template\"\nversion = \"{current_version}\""
-replace = "name = \"uv-python-template\"\nversion = \"{new_version}\""
+search = "name = \"emosvg\"\nversion = \"{current_version}\""
+replace = "name = \"emosvg\"\nversion = \"{new_version}\""
 
 [tool.coverage.report]
 exclude_lines = [
