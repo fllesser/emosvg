@@ -26,10 +26,7 @@ def get_emoji_svg_path(emoji: str) -> Path:
     """
     # Convert emoji to hex string sequence
     # e.g. "😀" -> "1F600"
-    codepoints = []
-    for char in emoji:
-        codepoints.append(f"{ord(char):X}")
-
+    codepoints = [f"{ord(char):X}" for char in emoji]
     filename = "-".join(codepoints) + ".svg"
     file_path = EMOJI_SVG_DIR / filename
 
@@ -114,6 +111,7 @@ def text(
     # Parse lines into nodes
     nodes_lst = helper.parse_lines(lines)
 
+    # Collect needed emojis
     emj_set: set[str] = {
         node.content
         for nodes in nodes_lst
@@ -122,20 +120,23 @@ def text(
     }
     logging.debug(f"Collecting {len(emj_set)} emojis: {emj_set}")
 
-    # Render each line
+    # Calculate emoji size and position diff
     font_size = get_font_size(font)
-    emoji_size = font_size * scale
-    x_diff = int((emoji_size - font_size) / 2)
-    y_diff = int((emoji_size - line_height) / 2)
+    emj_size = font_size * scale
+    x_diff = int((emj_size - font_size) / 2)
+    y_diff = int((emj_size - line_height) / 2)
+
+    # Get all pil images
     emj_map = {
         emj: get_emoji_pil_image(
             emj,
-            emoji_size,
-            emoji_size,
+            emj_size,
+            emj_size,
         )
         for emj in emj_set
     }
 
+    # Draw each line
     for line in nodes_lst:
         cur_x = x
 
