@@ -1,4 +1,3 @@
-import logging
 from io import BytesIO
 from pathlib import Path
 
@@ -10,7 +9,6 @@ from . import helper
 from .helper import NodeType
 
 PILImage = Image.Image
-PILDraw = ImageDraw.ImageDraw
 FontT = ImageFont | FreeTypeFont | TransposedFont
 ColorT = int | str | tuple[int, int, int] | tuple[int, int, int, int]
 
@@ -50,7 +48,7 @@ def get_emoji_bytes(emoji: str, width: float, height: float) -> bytes | None:
     return png_data
 
 
-def get_emoji_pil_image(emoji: str, width: float, height: float) -> PILImage | None:
+def get_emoji_image(emoji: str, width: float, height: float) -> PILImage | None:
     png_data = get_emoji_bytes(emoji, width, height)
 
     if png_data is None:
@@ -60,6 +58,27 @@ def get_emoji_pil_image(emoji: str, width: float, height: float) -> PILImage | N
     image = Image.open(BytesIO(png_data)).convert("RGBA")
 
     return image
+
+
+def get_font_size(font: FontT) -> float:
+    match font:
+        case FreeTypeFont():
+            return font.size
+        case TransposedFont():
+            return get_font_size(font.font)
+        case ImageFont():
+            raise ValueError("Not support ImageFont")
+
+
+def get_font_height(font: FontT) -> int:
+    match font:
+        case FreeTypeFont():
+            ascent, descent = font.getmetrics()
+            return ascent + descent
+        case TransposedFont():
+            return get_font_height(font.font)
+        case ImageFont():
+            raise ValueError("Not support ImageFont")
 
 
 def text(
@@ -72,7 +91,7 @@ def text(
     line_height: int | None = None,
     scale: float = 1.1,
 ) -> None:
-    """Text rendering method with Unicode and optional Discord emoji support.
+    """Text rendering method with Unicode emoji.
 
     Parameters
     ----------
@@ -104,7 +123,7 @@ def text(
     # Check if lines has emoji
     if not helper.contains_emoji(lines):
         for line in lines:
-            draw.text((x, y), line, font=font, fill=fill)
+            draw.text(xy, line, font=font, fill=fill)
             y += line_height
         return
 
@@ -118,7 +137,6 @@ def text(
         for node in nodes
         if node.type is NodeType.EMOJI
     }
-    logging.debug(f"Collecting {len(emj_set)} emojis: {emj_set}")
 
     # Calculate emoji size and position diff
     font_size = get_font_size(font)
@@ -128,7 +146,7 @@ def text(
 
     # Get all pil images
     emj_map = {
-        emj: get_emoji_pil_image(
+        emj: get_emoji_image(
             emj,
             emj_size,
             emj_size,
@@ -142,35 +160,11 @@ def text(
 
         for node in line:
             if node.type is NodeType.EMOJI:
-                emj_img = emj_map.get(node.content)
-                if emj_img is None:
-                    logging.warning(f"Emoji not found: {node.content}")
-                    continue
-                image.paste(emj_img, (cur_x - x_diff, y - y_diff), emj_img)
-                cur_x += int(font_size)
+                if emj_img := emj_map.get(node.content):
+                    image.paste(emj_img, (cur_x - x_diff, y - y_diff), emj_img)
+                    cur_x += int(font_size)
             else:
                 draw.text((cur_x, y), node.content, font=font, fill=fill)
                 cur_x += int(font.getlength(node.content))
 
         y += line_height
-
-
-def get_font_size(font: FontT) -> float:
-    match font:
-        case FreeTypeFont():
-            return font.size
-        case TransposedFont():
-            return get_font_size(font.font)
-        case ImageFont():
-            raise ValueError("Not support ImageFont")
-
-
-def get_font_height(font: FontT) -> int:
-    match font:
-        case FreeTypeFont():
-            ascent, descent = font.getmetrics()
-            return ascent + descent
-        case TransposedFont():
-            return get_font_height(font.font)
-        case ImageFont():
-            raise ValueError("Not support ImageFont")
