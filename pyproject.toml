@@ -5,11 +5,7 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
-dependencies = [
-    "cairosvg>=2.8.2",
-    "emoji>=2.15.0",
-    "pillow>=11.0.0",
-]
+dependencies = ["cairosvg>=2.8.2", "emoji>=2.15.0", "pillow>=11.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/fllesser/emosvg"
@@ -22,6 +18,7 @@ dev = [
   "bump-my-version>=1.2.4",
   "poethepoet>=0.36.0",
   "ruff>=0.14.8,<1.0.0",
+  "apilmoji[tqdm]>=0.2.1",
   { include-group = "test" },
 ]
 test = [
