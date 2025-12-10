@@ -43,6 +43,10 @@ filename = "uv.lock"
 search = "name = \"emosvg\"\nversion = \"{current_version}\""
 replace = "name = \"emosvg\"\nversion = \"{new_version}\""
 
+[tool.coverage.run]
+# 忽略 tests 目录的覆盖率
+omit = ["tests/**"]
+
 [tool.coverage.report]
 exclude_lines = [
   "raise NotImplementedError",

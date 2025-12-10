@@ -17,7 +17,7 @@ RESOURCE_DIR = Path(__file__).parent / "resources"
 EMOJI_SVG_DIR = RESOURCE_DIR / "openmoji-svg-color"
 
 
-def get_emoji_svg_path(emoji: str) -> Path:
+def get_emoji_svg_path(emoji: str) -> Path | None:
     """
     Converts a unicode emoji string to the corresponding SVG file path.
     Example: "😀" -> ".../1F600.svg"
@@ -28,18 +28,13 @@ def get_emoji_svg_path(emoji: str) -> Path:
     filename = "-".join(codepoints) + ".svg"
     file_path = EMOJI_SVG_DIR / filename
 
-    if not file_path.exists():
-        # Try checking if there are variant selectors to remove or handle
-        # For now, just raise if not found
-        raise FileNotFoundError(
-            f"Emoji SVG not found for {emoji} (looked for {filename})"
-        )
-
-    return file_path
+    return file_path if file_path.exists() else None
 
 
 def get_emoji_bytes(emoji: str, width: float, height: float) -> bytes | None:
     svg_file = get_emoji_svg_path(emoji)
+    if svg_file is None:
+        return None
 
     png_data: bytes | None = cairosvg.svg2png(
         url=str(svg_file), output_width=width, output_height=height
