@@ -208,3 +208,6 @@ __marimo__/
 
 # pytest
 junit.xml
+
+# macOS
+.DS_Store
