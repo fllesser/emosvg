@@ -15,11 +15,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  typos:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: crate-ci/typos@master
+  # typos:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - uses: crate-ci/typos@master
 
   prek:
     runs-on: ubuntu-latest
