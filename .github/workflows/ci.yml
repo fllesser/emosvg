@@ -47,7 +47,7 @@ jobs:
 
   test:
     name: Coverage
-    needs: [typos, basedpyright, prek]
+    needs: [basedpyright, prek]
     # runs-on: ${{ matrix.os }}
     runs-on: ubuntu-latest
     permissions:
