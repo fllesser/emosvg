@@ -118,7 +118,7 @@ def text(
     # Check if lines has emoji
     if not helper.contains_emoji(lines):
         for line in lines:
-            draw.text(xy, line, font=font, fill=fill)
+            draw.text((x, y), line, font=font, fill=fill)
             y += line_height
         return
 
