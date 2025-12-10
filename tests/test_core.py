@@ -1,14 +1,14 @@
 from pathlib import Path
 
 
-def test_get_emoji_pil_image():
-    from emosvg.core import get_emoji_pil_image
+def test_get_emoji_image():
+    from emosvg.core import get_emoji_image
 
     emoji = "😀"
     width = 100
     height = 100
 
-    emj_img = get_emoji_pil_image(emoji, width, height)
+    emj_img = get_emoji_image(emoji, width, height)
 
     assert emj_img is not None
     assert emj_img.width == width

@@ -34,8 +34,6 @@ def contains_emoji(lines: list[str]) -> bool:
     ----------
     text : str | list[str]
         The text to check
-    unicode_only : bool, default=True
-        If True, only match Unicode emojis; if False, also match Discord emojis
 
     Returns
     -------
