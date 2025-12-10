@@ -25,3 +25,15 @@ def test_text(font_path: Path, cache_dir: Path):
     font = ImageFont.truetype(font_path, 24)
     text(image, (10, 10), string, font=font, fill=(0, 0, 0))
     image.save(cache_dir / "smile.png")
+
+
+def test_combo_emoji(font_path: Path, cache_dir: Path):
+    from PIL import Image, ImageFont
+
+    from emosvg.core import text
+
+    lines = ["👍🏻 👍🏼 👍🏽 👍🏾 👍🏿", "👨‍👩‍👧‍👦 👩‍👩‍👧‍👦 👨‍👨‍👧‍👦 👩‍👦 👨‍👦"]
+    image = Image.new("RGB", (400, 200), (255, 255, 255))
+    font = ImageFont.truetype(font_path, 24)
+    text(image, (10, 10), lines, font=font, fill=(0, 0, 0))
+    image.save(cache_dir / "combo.png")

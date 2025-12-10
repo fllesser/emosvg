@@ -118,6 +118,7 @@ ignore = [
   "RUF003", # ambiguous-unicode-character-comment
   "W191",   # indentation contains tabs
   "TID252", # relative-import
+  "T201",   # print-call
 ]
 
 [tool.ruff.lint.isort]
