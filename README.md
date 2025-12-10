@@ -6,7 +6,6 @@ An emoji rendering Extension for PIL
 [![pypi](https://img.shields.io/pypi/v/emosvg.svg)](https://pypi.python.org/pypi/emosvg)
 [![python](https://img.shields.io/badge/python-3.10|3.11|3.12|3.13|3.14-blue.svg)](https://python.org)
 [![ruff](https://img.shields.io/badge/code%20style-ruff-black?style=flat-square&logo=ruff)](https://github.com/astral-sh/ruff)
-[![pre-commit](https://results.pre-commit.ci/badge/github/fllesser/emosvg/main.svg)](https://results.pre-commit.ci/latest/github/fllesser/emosvg/main)
 [![codecov](https://codecov.io/gh/fllesser/emosvg/graph/badge.svg?token=VCS8IHSO7U)](https://codecov.io/gh/fllesser/emosvg)
 
 ## Installation

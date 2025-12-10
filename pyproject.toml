@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
 dependencies = ["cairosvg>=2.8.2", "emoji>=2.15.0", "pillow>=11.0.0"]
 
