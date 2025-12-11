@@ -1,4 +1,3 @@
-import logging
 from io import BytesIO
 from pathlib import Path
 
@@ -137,7 +136,7 @@ def wrap_text(
     return wrapped_lines
 
 
-def text(
+def text_with_wrapped(
     image: PILImage,
     xy: tuple[int, int],
     lines: list[list[Node]],
@@ -204,9 +203,9 @@ def text(
                     image.paste(emj_img, (cur_x - x_diff, y - y_diff), emj_img)
                 else:
                     # 16 进制
-                    logging.warning(
-                        f"Emoji [{node.content}] {'-'.join([f'{ord(c):X}' for c in node.content])} not found"  # noqa: E501
-                    )
+                    # logging.warning(
+                    #     f"Emoji [{node.content}] {'-'.join([f'{ord(c):X}' for c in node.content])} not found"  # noqa: E501
+                    # )
                     draw.text((cur_x, y), node.content, font=font, fill=fill)
                 cur_x += int(font_size)
             else:
@@ -216,7 +215,7 @@ def text(
         y += line_height
 
 
-def text_without_wrap(
+def text(
     image: PILImage,
     xy: tuple[int, int],
     lines: list[str] | str,
@@ -263,6 +262,14 @@ def text_without_wrap(
         return
 
     # Parse lines into nodes
-    nodes_lst = helper.parse_lines(lines)
+    wrapped_lines = helper.parse_lines(lines)
 
-    text(image, xy, nodes_lst, font, fill=fill, line_height=line_height, scale=scale)
+    text_with_wrapped(
+        image,
+        xy,
+        wrapped_lines,
+        font,
+        fill=fill,
+        line_height=line_height,
+        scale=scale,
+    )

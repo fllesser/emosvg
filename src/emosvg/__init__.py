@@ -5,7 +5,7 @@ from .core import (
     wrap_text,
     get_font_size,
     get_font_height,
-    text_without_wrap,
+    text_with_wrapped,
 )
 
 __all__ = [
@@ -14,6 +14,6 @@ __all__ = [
     "get_font_height",
     "get_font_size",
     "text",
-    "text_without_wrap",
+    "text_with_wrapped",
     "wrap_text",
 ]
