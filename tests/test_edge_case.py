@@ -8,7 +8,7 @@ def test_no_emoji_text(font_path, cache_dir):
 
     font = ImageFont.truetype(font_path, 24)
     with Image.new("RGB", (3000, 2100), (255, 248, 220)) as image:  # 纸黄背景
-        emosvg.text(image, (10, 10), "Hello World", font, fill=(0, 0, 0))
+        emosvg.text_without_wrap(image, (10, 10), "Hello World", font, fill=(0, 0, 0))
         image.save(cache_dir / "no_emoji_text.png")
 
 
@@ -35,7 +35,7 @@ def test_no_text(font_path):
 
     font = ImageFont.truetype(font_path, 24)
     with Image.new("RGB", (3000, 2100), (255, 248, 220)) as image:  # 纸黄背景
-        emosvg.text(image, (10, 10), "", font, fill=(0, 0, 0))
+        emosvg.text_without_wrap(image, (10, 10), "", font, fill=(0, 0, 0))
 
 
 def test_no_emoji():

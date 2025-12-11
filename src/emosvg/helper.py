@@ -36,10 +36,10 @@ def contains_emoji(lines: list[str]) -> bool:
 
 
 def parse_lines(lines: list[str]) -> list[list[Node]]:
-    return [_parse_line(line) for line in lines]
+    return [parse_line(line) for line in lines]
 
 
-def _parse_line_by_regex(line: str):
+def parse_line_by_regex(line: str):
     nodes: list[Node] = []
 
     last_end = 0
@@ -60,7 +60,7 @@ def _parse_line_by_regex(line: str):
     return nodes
 
 
-def _parse_line(line: str):
+def parse_line(line: str):
     """Parse a line of text, identifying Unicode emojis including sequences."""
     nodes: list[Node] = []
 

@@ -1,5 +1,8 @@
 import time
 import logging
+from pathlib import Path
+
+from PIL import Image, ImageFont
 
 emoji_texts = """
 表情
@@ -62,17 +65,18 @@ emoji_texts = """
 
 
 def test_many_emoji(font_path, cache_dir):
-    from PIL import Image, ImageFont
-
-    from emosvg.core import text
+    from emosvg.core import text, wrap_text
 
     font = ImageFont.truetype(font_path, 24)
-    with Image.new("RGB", (3000, 2100), (255, 248, 220)) as image:  # 纸黄背景
+    # Wrap text into lines
+    lines = wrap_text(emoji_texts, font, max_width=1000)
+
+    with Image.new("RGB", (1000, 2100), (255, 248, 220)) as image:  # 纸黄背景
         start = time.time()
         text(
             image,
             (10, 10),
-            emoji_texts,
+            lines,
             font,
             fill=(0, 0, 0),
         )
@@ -101,3 +105,18 @@ def test_many_emoji(font_path, cache_dir):
 #         end = time.time()
 #         logging.info(f"[apilmoji] Cont: {end - start:.2f} seconds")
 #         image.save(cache_dir / "many_emoji_async.png")
+
+
+emoji_texts2 = "#⃣0⃣1⃣2⃣3⃣4⃣5⃣6⃣7⃣8⃣9⃣emoji_u002a_20e3©®‼⁉™ℹ↔↕↖↗↘↙↩↪⌚⌛⌨⏏⏩⏪⏫⏬⏭⏮⏯⏰⏱⏲⏳⏸⏹⏺Ⓜ▪▫▶◀◻◼◽◾☀☁☂☃☄☎☑☔☕☘☝☝🏻☝🏼☝🏽☝🏾☝🏿☠☢☣☦☪☮☯☸☹☺♀♂♈♉♊♋♌♍♎♏♐♑♒♓♟♠♣♥♦♨♻♾♿⚒⚓⚔⚕⚖⚗⚙⚛⚜⚠⚡⚧⚪⚫⚰⚱⚽⚾⛄⛅⛈⛎⛏⛑⛓⛔⛩⛪⛰⛱⛲⛳⛴⛵⛷⛸⛹⛹‍♀⛹‍♂⛹🏻⛹🏻‍♀⛹🏻‍♂⛹🏼⛹🏼‍♀⛹🏼‍♂⛹🏽⛹🏽‍♀⛹🏽‍♂⛹🏾⛹🏾‍♀⛹🏾‍♂⛹🏿⛹🏿‍♀⛹🏿‍♂⛺⛽✂✅✈✉✊✊🏻✊🏼✊🏽✊🏾✊🏿✋✋🏻✋🏼✋🏽✋🏾✋🏿✌✌🏻✌🏼✌🏽✌🏾✌🏿✍✍🏻✍🏼✍🏽✍🏾✍🏿✏✒✔✖✝✡✨✳✴❄❇❌❎❓❔❕❗❣❤❤‍🔥❤‍🩹➕➖➗➡➰➿⤴⤵⬅⬆⬇⬛⬜⭐⭕〰〽㊗㊙🀄🃏🅰🅱🅾🅿🆎🆑🆒🆓🆔🆕🆖🆗🆘🆙🆚🈁🈂🈚🈯🈲🈳🈴🈵🈶🈷🈸🈹🈺🉐🉑🌀🌁🌂🌃🌄🌅🌆🌇🌈🌉🌊🌋🌌🌍🌎🌏🌐🌑🌒🌓🌔🌕🌖🌗🌘🌙🌚🌛🌜🌝🌞🌟🌠🌡🌤🌥🌦🌧🌨🌩🌪🌫🌬🌭🌮🌯🌰🌱🌲🌳🌴🌵🌶🌷🌸🌹🌺🌻🌼🌽🌾🌿🍀🍁🍂🍃🍄🍅🍆🍇🍈🍉🍊🍋🍌🍍🍎🍏🍐🍑🍒🍓🍔🍕🍖🍗🍘🍙🍚🍛🍜🍝🍞🍟🍠🍡🍢🍣🍤🍥🍦🍧🍨🍩🍪🍫🍬🍭🍮🍯🍰🍱🍲🍳🍴🍵🍶🍷🍸🍹🍺🍻🍼🍽🍾🍿🎀🎁🎂🎃🎄🎅🎅🏻🎅🏼🎅🏽🎅🏾🎅🏿🎆🎇🎈🎉🎊🎋🎌🎍🎎🎏🎐🎑🎒🎓🎖🎗🎙🎚🎛🎞🎟🎠🎡🎢🎣🎤🎥🎦🎧🎨🎩🎪🎫🎬🎭🎮🎯🎰🎱🎲🎳🎴🎵🎶🎷🎸🎹🎺🎻🎼🎽🎾🎿🏀🏁🏂🏂🏻🏂🏼🏂🏽🏂🏾🏂🏿🏃🏃‍♀🏃‍♂🏃🏻🏃🏻‍♀🏃🏻‍♂🏃🏼🏃🏼‍♀🏃🏼‍♂🏃🏽🏃🏽‍♀🏃🏽‍♂🏃🏾🏃🏾‍♀🏃🏾‍♂🏃🏿🏃🏿‍♀🏃🏿‍♂🏄🏄‍♀🏄‍♂🏄🏻🏄🏻‍♀🏄🏻‍♂🏄🏼🏄🏼‍♀🏄🏼‍♂🏄🏽🏄🏽‍♀🏄🏽‍♂🏄🏾🏄🏾‍♀🏄🏾‍♂🏄🏿🏄🏿‍♀🏄🏿‍♂🏅🏆🏇🏇🏻🏇🏼🏇🏽🏇🏾🏇🏿🏈🏉🏊🏊‍♀🏊‍♂🏊🏻🏊🏻‍♀🏊🏻‍♂🏊🏼🏊🏼‍♀🏊🏼‍♂🏊🏽🏊🏽‍♀🏊🏽‍♂🏊🏾🏊🏾‍♀🏊🏾‍♂🏊🏿🏊🏿‍♀🏊🏿‍♂🏋🏋‍♀🏋‍♂🏋🏻🏋🏻‍♀🏋🏻‍♂🏋🏼🏋🏼‍♀🏋🏼‍♂🏋🏽🏋🏽‍♀🏋🏽‍♂🏋🏾🏋🏾‍♀🏋🏾‍♂🏋🏿🏋🏿‍♀🏋🏿‍♂🏌🏌‍♀🏌‍♂🏌🏻🏌🏻‍♀🏌🏻‍♂🏌🏼🏌🏼‍♀🏌🏼‍♂🏌🏽🏌🏽‍♀🏌🏽‍♂🏌🏾🏌🏾‍♀🏌🏾‍♂🏌🏿🏌🏿‍♀🏌🏿‍♂🏍🏎🏏🏐🏑🏒🏓🏔🏕🏖🏗🏘🏙🏚🏛🏜🏝🏞🏟🏠🏡🏢🏣🏤🏥🏦🏧🏨🏩🏪🏫🏬🏭🏮🏯🏰🏳🏳‍⚧🏳‍🌈🏴🏴‍☠🏵🏾🏿🐀🐁🐂🐃🐄🐅🐆🐇🐈🐈‍⬛🐉🐊🐋🐌🐍🐎🐏🐐🐑🐒🐓🐔🐕🐕‍🦺🐖🐗🐘🐙🐚🐛🐜🐝🐞🐟🐠🐡🐢🐣🐤🐥🐦🐧🐨🐩🐪🐫🐬🐭🐮🐯🐰🐱🐲🐳🐴🐵🐶🐷🐸🐹🐺🐻🐻‍❄🐼🐽🐾🐿👀👁👁‍🗨👂👂🏻👂🏼👂🏽👂🏾👂🏿👃👃🏻👃🏼👃🏽👃🏾👃🏿👄👅👆👆🏻👆🏼👆🏽👆🏾👆🏿👇👇🏻👇🏼👇🏽👇🏾👇🏿👈👈🏻👈🏼👈🏽👈🏾👈🏿👉👉🏻👉🏼👉🏽👉🏾👉🏿👊👊🏻👊🏼👊🏽👊🏾👊🏿👋👋🏻👋🏼👋🏽👋🏾👋🏿👌👌🏻👌🏼👌🏽👌🏾👌🏿👍👍🏻👍🏼👍🏽👍🏾👍🏿👎👎🏻👎🏼👎🏽👎🏾👎🏿👏👏🏻👏🏼👏🏽👏🏾👏🏿👐👐🏻👐🏼👐🏽👐🏾👐🏿👑👒👓👔👕👖👗👘👙👚👛👜👝👞👟👠👡👢👣👤👥👦👦🏻👦🏼👦🏽👦🏾👦🏿👧👧🏻👧🏼👧🏽👧🏾👧🏿👨👨‍⚕👨‍⚖👨‍✈👨‍❤‍👨👨‍❤‍💋‍👨👨‍🌾👨‍🍳👨‍🍼👨‍🎓👨‍🎤👨‍🎨👨‍🏫👨‍🏭👨‍👦👨‍👦‍👦👨‍👧👨"  # noqa: E501
+
+
+async def test_many_emoji2(font_path: Path, cache_dir: Path):
+    from emosvg.core import text, wrap_text, get_font_height
+
+    width = 500
+    font = ImageFont.truetype(font_path, 24)
+    lines = wrap_text(emoji_texts2, font, width)
+    height = len(lines) * get_font_height(font)
+    image = Image.new("RGB", (width, height), (255, 255, 255))
+    text(image, (10, 10), lines, font, fill=(0, 0, 0))
+    image.save(cache_dir / "test_many_emoji2.png")
