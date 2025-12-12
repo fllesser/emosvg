@@ -202,11 +202,8 @@ def text_with_wrapped(
                 if emj_img := emj_map.get(node.content):
                     image.paste(emj_img, (cur_x - x_diff, y - y_diff), emj_img)
                 else:
-                    # 16 进制
-                    # logging.warning(
-                    #     f"Emoji [{node.content}] {'-'.join([f'{ord(c):X}' for c in node.content])} not found"  # noqa: E501
-                    # )
-                    draw.text((cur_x, y), node.content, font=font, fill=fill)
+                    # 忽略组合表情的修饰符，只渲染第一个字符
+                    draw.text((cur_x, y), node.content[0], font=font, fill=fill)
                 cur_x += int(font_size)
             else:
                 draw.text((cur_x, y), node.content, font=font, fill=fill)

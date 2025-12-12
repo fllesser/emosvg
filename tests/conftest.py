@@ -7,7 +7,9 @@ from pathlib import Path
 import pytest
 
 # 共享的测试资源路径
-FONT_PATH = Path(__file__).parent / "resource" / "HYSongYunLangHeiW-1.ttf"
+RESOURCE_DIR = Path(__file__).parent / "resource"
+FONT_PATH = RESOURCE_DIR / "HYSongYunLangHeiW-1.ttf"
+LXGW_FONT_PATH = RESOURCE_DIR / "LXGWZhenKaiGB-Regular.ttf"
 CACHE_DIR = Path() / ".cache"
 
 logging.basicConfig(
@@ -21,6 +23,12 @@ logging.basicConfig(
 def font_path() -> Path:
     """返回测试字体文件路径。"""
     return FONT_PATH
+
+
+@pytest.fixture(scope="session")
+def lxgw_font_path() -> Path:
+    """返回测试字体文件路径。"""
+    return LXGW_FONT_PATH
 
 
 @pytest.fixture(scope="session")
