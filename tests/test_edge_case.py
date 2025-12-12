@@ -15,17 +15,17 @@ def test_no_emoji_text(font_path, cache_dir):
 def test_other_font():
     from PIL import ImageFont
 
-    from emosvg.core import get_font_size, get_font_height
+    import emosvg
 
     # test ImageFont
     font = ImageFont.load_default_imagefont()
-    pytest.raises(ValueError, get_font_height, font)
-    pytest.raises(ValueError, get_font_size, font)
+    pytest.raises(ValueError, emosvg.get_font_height, font)
+    pytest.raises(ValueError, emosvg.get_font_size, font)
 
     # test transparent font
     font = ImageFont.TransposedFont(font)
-    pytest.raises(ValueError, get_font_height, font)
-    pytest.raises(ValueError, get_font_size, font)
+    pytest.raises(ValueError, emosvg.get_font_height, font)
+    pytest.raises(ValueError, emosvg.get_font_size, font)
 
 
 def test_no_text(font_path):
@@ -39,12 +39,23 @@ def test_no_text(font_path):
 
 
 def test_no_emoji():
-    from emosvg.core import get_emoji_image
+    import emosvg
 
     emoji = "1"
     width = 100
     height = 100
 
-    emj_img = get_emoji_image(emoji, width, height)
+    emj_img = emosvg.get_emoji_image(emoji, width, height)
 
     assert emj_img is None
+
+
+def test_wrap_text_no_text():
+    from PIL import ImageFont
+
+    import emosvg
+
+    font = ImageFont.load_default_imagefont()
+    lines = emosvg.wrap_text("", font, 100)
+    assert lines == []
+

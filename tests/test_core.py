@@ -37,3 +37,12 @@ def test_combo_emoji(font_path: Path, cache_dir: Path):
     font = ImageFont.truetype(font_path, 24)
     emosvg.text(image, (10, 10), lines, font=font, fill=(0, 0, 0))
     image.save(cache_dir / "combo.png")
+
+
+def test_wrap_text_for_list():
+    from PIL import ImageFont
+
+    import emosvg
+
+    font = ImageFont.load_default_imagefont()
+    emosvg.wrap_text(["Hello World"], font, 100)
