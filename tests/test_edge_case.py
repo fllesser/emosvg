@@ -58,4 +58,3 @@ def test_wrap_text_no_text():
     font = ImageFont.load_default_imagefont()
     lines = emosvg.wrap_text("", font, 100)
     assert lines == []
-
