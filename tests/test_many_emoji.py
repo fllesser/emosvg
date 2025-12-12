@@ -1,5 +1,8 @@
 import time
 import logging
+from pathlib import Path
+
+from PIL import Image, ImageFont
 
 emoji_texts = """
 表情
@@ -62,17 +65,18 @@ emoji_texts = """
 
 
 def test_many_emoji(font_path, cache_dir):
-    from PIL import Image, ImageFont
-
-    from emosvg.core import text
+    import emosvg
 
     font = ImageFont.truetype(font_path, 24)
-    with Image.new("RGB", (3000, 2100), (255, 248, 220)) as image:  # 纸黄背景
+    # Wrap text into lines
+    lines = emosvg.wrap_text(emoji_texts, font, max_width=1000)
+
+    with Image.new("RGB", (1000, 2100), (255, 248, 220)) as image:  # 纸黄背景
         start = time.time()
-        text(
+        emosvg.text_with_wrapped(
             image,
             (10, 10),
-            emoji_texts,
+            lines,
             font,
             fill=(0, 0, 0),
         )
@@ -101,3 +105,40 @@ def test_many_emoji(font_path, cache_dir):
 #         end = time.time()
 #         logging.info(f"[apilmoji] Cont: {end - start:.2f} seconds")
 #         image.save(cache_dir / "many_emoji_async.png")
+
+
+emoji_texts2 = "#⃣0⃣1⃣2⃣3⃣4⃣5⃣6⃣7⃣8⃣9⃣emoji_u002a_20e3©®‼⁉™ℹ↔↕↖↗↘↙↩↪⌚⌛⌨⏏⏩⏪⏫⏬⏭⏮⏯⏰⏱⏲⏳⏸⏹⏺Ⓜ▪▫▶◀◻◼◽◾☀☁☂☃☄☎☑☔☕☘☝☝🏻☝🏼☝🏽☝🏾☝🏿☠☢☣☦☪☮☯☸☹☺♀♂♈♉♊♋♌♍♎♏♐♑♒♓♟♠♣♥♦♨♻♾♿⚒⚓⚔⚕⚖⚗⚙⚛⚜⚠⚡⚧⚪⚫⚰⚱⚽⚾⛄⛅⛈⛎⛏⛑⛓⛔⛩⛪⛰⛱⛲⛳⛴⛵⛷⛸⛹⛹‍♀⛹‍♂⛹🏻⛹🏻‍♀⛹🏻‍♂⛹🏼⛹🏼‍♀⛹🏼‍♂⛹🏽⛹🏽‍♀⛹🏽‍♂⛹🏾⛹🏾‍♀⛹🏾‍♂⛹🏿⛹🏿‍♀⛹🏿‍♂⛺⛽✂✅✈✉✊✊🏻✊🏼✊🏽✊🏾✊🏿✋✋🏻✋🏼✋🏽✋🏾✋🏿✌✌🏻✌🏼✌🏽✌🏾✌🏿✍✍🏻✍🏼✍🏽✍🏾✍🏿✏✒✔✖✝✡✨✳✴❄❇❌❎❓❔❕❗❣❤❤‍🔥❤‍🩹➕➖➗➡➰➿⤴⤵⬅⬆⬇⬛⬜⭐⭕〰〽㊗㊙🀄🃏🅰🅱🅾🅿🆎🆑🆒🆓🆔🆕🆖🆗🆘🆙🆚🈁🈂🈚🈯🈲🈳🈴🈵🈶🈷🈸🈹🈺🉐🉑🌀🌁🌂🌃🌄🌅🌆🌇🌈🌉🌊🌋🌌🌍🌎🌏🌐🌑🌒🌓🌔🌕🌖🌗🌘🌙🌚🌛🌜🌝🌞🌟🌠🌡🌤🌥🌦🌧🌨🌩🌪🌫🌬🌭🌮🌯🌰🌱🌲🌳🌴🌵🌶🌷🌸🌹🌺🌻🌼🌽🌾🌿🍀🍁🍂🍃🍄🍅🍆🍇🍈🍉🍊🍋🍌🍍🍎🍏🍐🍑🍒🍓🍔🍕🍖🍗🍘🍙🍚🍛🍜🍝🍞🍟🍠🍡🍢🍣🍤🍥🍦🍧🍨🍩🍪🍫🍬🍭🍮🍯🍰🍱🍲🍳🍴🍵🍶🍷🍸🍹🍺🍻🍼🍽🍾🍿🎀🎁🎂🎃🎄🎅🎅🏻🎅🏼🎅🏽🎅🏾🎅🏿🎆🎇🎈🎉🎊🎋🎌🎍🎎🎏🎐🎑🎒🎓🎖🎗🎙🎚🎛🎞🎟🎠🎡🎢🎣🎤🎥🎦🎧🎨🎩🎪🎫🎬🎭🎮🎯🎰🎱🎲🎳🎴🎵🎶🎷🎸🎹🎺🎻🎼🎽🎾🎿🏀🏁🏂🏂🏻🏂🏼🏂🏽🏂🏾🏂🏿🏃🏃‍♀🏃‍♂🏃🏻🏃🏻‍♀🏃🏻‍♂🏃🏼🏃🏼‍♀🏃🏼‍♂🏃🏽🏃🏽‍♀🏃🏽‍♂🏃🏾🏃🏾‍♀🏃🏾‍♂🏃🏿🏃🏿‍♀🏃🏿‍♂🏄🏄‍♀🏄‍♂🏄🏻🏄🏻‍♀🏄🏻‍♂🏄🏼🏄🏼‍♀🏄🏼‍♂🏄🏽🏄🏽‍♀🏄🏽‍♂🏄🏾🏄🏾‍♀🏄🏾‍♂🏄🏿🏄🏿‍♀🏄🏿‍♂🏅🏆🏇🏇🏻🏇🏼🏇🏽🏇🏾🏇🏿🏈🏉🏊🏊‍♀🏊‍♂🏊🏻🏊🏻‍♀🏊🏻‍♂🏊🏼🏊🏼‍♀🏊🏼‍♂🏊🏽🏊🏽‍♀🏊🏽‍♂🏊🏾🏊🏾‍♀🏊🏾‍♂🏊🏿🏊🏿‍♀🏊🏿‍♂🏋🏋‍♀🏋‍♂🏋🏻🏋🏻‍♀🏋🏻‍♂🏋🏼🏋🏼‍♀🏋🏼‍♂🏋🏽🏋🏽‍♀🏋🏽‍♂🏋🏾🏋🏾‍♀🏋🏾‍♂🏋🏿🏋🏿‍♀🏋🏿‍♂🏌🏌‍♀🏌‍♂🏌🏻🏌🏻‍♀🏌🏻‍♂🏌🏼🏌🏼‍♀🏌🏼‍♂🏌🏽🏌🏽‍♀🏌🏽‍♂🏌🏾🏌🏾‍♀🏌🏾‍♂🏌🏿🏌🏿‍♀🏌🏿‍♂🏍🏎🏏🏐🏑🏒🏓🏔🏕🏖🏗🏘🏙🏚🏛🏜🏝🏞🏟🏠🏡🏢🏣🏤🏥🏦🏧🏨🏩🏪🏫🏬🏭🏮🏯🏰🏳🏳‍⚧🏳‍🌈🏴🏴‍☠🏵🏾🏿🐀🐁🐂🐃🐄🐅🐆🐇🐈🐈‍⬛🐉🐊🐋🐌🐍🐎🐏🐐🐑🐒🐓🐔🐕🐕‍🦺🐖🐗🐘🐙🐚🐛🐜🐝🐞🐟🐠🐡🐢🐣🐤🐥🐦🐧🐨🐩🐪🐫🐬🐭🐮🐯🐰🐱🐲🐳🐴🐵🐶🐷🐸🐹🐺🐻🐻‍❄🐼🐽🐾🐿👀👁👁‍🗨👂👂🏻👂🏼👂🏽👂🏾👂🏿👃👃🏻👃🏼👃🏽👃🏾👃🏿👄👅👆👆🏻👆🏼👆🏽👆🏾👆🏿👇👇🏻👇🏼👇🏽👇🏾👇🏿👈👈🏻👈🏼👈🏽👈🏾👈🏿👉👉🏻👉🏼👉🏽👉🏾👉🏿👊👊🏻👊🏼👊🏽👊🏾👊🏿👋👋🏻👋🏼👋🏽👋🏾👋🏿👌👌🏻👌🏼👌🏽👌🏾👌🏿👍👍🏻👍🏼👍🏽👍🏾👍🏿👎👎🏻👎🏼👎🏽👎🏾👎🏿👏👏🏻👏🏼👏🏽👏🏾👏🏿👐👐🏻👐🏼👐🏽👐🏾👐🏿👑👒👓👔👕👖👗👘👙👚👛👜👝👞👟👠👡👢👣👤👥👦👦🏻👦🏼👦🏽👦🏾👦🏿👧👧🏻👧🏼👧🏽👧🏾👧🏿👨👨‍⚕👨‍⚖👨‍✈👨‍❤‍👨👨‍❤‍💋‍👨👨‍🌾👨‍🍳👨‍🍼👨‍🎓👨‍🎤👨‍🎨👨‍🏫👨‍🏭👨‍👦👨‍👦‍👦👨‍👧👨"  # noqa: E501
+
+
+def test_many_emoji2(font_path: Path, cache_dir: Path):
+    import emosvg
+
+    width = 500
+    font = ImageFont.truetype(font_path, 24)
+    lines = emosvg.wrap_text(emoji_texts2, font, width)
+    height = len(lines) * emosvg.get_font_height(font)
+    image = Image.new("RGB", (width, height), (255, 255, 255))
+    emosvg.text_with_wrapped(image, (10, 10), lines, font, fill=(0, 0, 0))
+    image.save(cache_dir / "test_many_emoji2.png")
+
+
+multi_line_text = """
+这篇文章看完 立刻想起某人🐷和我聊过达尔文进化论  霍金天体物理黑洞辐射 到现在马斯克的人机接口
+再回头看一遍《普罗米修斯》中文版 有了新的理解 不枉我上映当天在新加坡电影院看了2.5小时原声（同学都睡着了）
+《超验骇客》德普的，也会觉得没那么不可思议 灵魂可以永生了 脑电波 💻控制all
+甚至再看一遍裘·德洛《人工智能》[苦涩]留住一缕头发 可以再见亲人
+还有《第五元素》DNA复制人可以 快速🔜学习语言与各种知识
+但都离不开要学习📑 下一代有多需要学习力
+"""  # noqa: E501
+
+
+def test_multi_line_text(font_path: Path, cache_dir: Path):
+    import emosvg
+
+    width = 300
+    font = ImageFont.truetype(font_path, 24)
+    lines = emosvg.wrap_text(multi_line_text, font, width)
+    height = len(lines) * emosvg.get_font_height(font)
+    image = Image.new("RGB", (width, height), (255, 255, 255))
+    emosvg.text_with_wrapped(image, (0, 10), lines, font, fill=(0, 0, 0))
+    image.save(cache_dir / "test_multi_line_text.png")
