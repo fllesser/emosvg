@@ -1,5 +1,5 @@
 def test_parse_line_by_regex():
-    from emosvg.helper import Node, NodeType, parse_line_by_regex
+    from emosvg.regex import Node, NodeType, parse_line_by_regex
 
     line = "👍🏻|👍🏼|👍🏽|👍🏾|👍🏿"
     nodes = parse_line_by_regex(line)
@@ -17,7 +17,7 @@ def test_parse_line_by_regex():
 
 
 def test_parse_line_by_regex_with_no_emoji():
-    from emosvg.helper import Node, NodeType, parse_line_by_regex
+    from emosvg.regex import Node, NodeType, parse_line_by_regex
 
     line = "Hello World!"
     nodes = parse_line_by_regex(line)
@@ -27,7 +27,7 @@ def test_parse_line_by_regex_with_no_emoji():
 
 
 def test_parse_line_by_regex_with_mixed_content():
-    from emosvg.helper import Node, NodeType, parse_line_by_regex
+    from emosvg.regex import Node, NodeType, parse_line_by_regex
 
     line = "Hello 👍🏻 World 👍🏼!"
     nodes = parse_line_by_regex(line)
