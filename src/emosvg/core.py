@@ -46,7 +46,9 @@ def get_emoji_image(emoji: str, width: float, height: float) -> PILImage | None:
         if len(emoji) == 1:
             return None
         # 如果是组合表情，忽略修饰符，尝试获取普通表情
-        return get_emoji_image(emoji[0], width, height)
+        png_data = get_emoji_bytes(emoji[0], width, height)
+        if png_data is None:
+            return None
 
     # Create PIL Image from bytes
     image = Image.open(BytesIO(png_data)).convert("RGBA")
