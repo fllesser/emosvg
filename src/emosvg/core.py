@@ -43,7 +43,12 @@ def get_emoji_image(emoji: str, width: float, height: float) -> PILImage | None:
     png_data = get_emoji_bytes(emoji, width, height)
 
     if png_data is None:
-        return None
+        if len(emoji) == 1:
+            return None
+        # 如果是组合表情，忽略修饰符，尝试获取普通表情
+        png_data = get_emoji_bytes(emoji[0], width, height)
+        if png_data is None:
+            return None
 
     # Create PIL Image from bytes
     image = Image.open(BytesIO(png_data)).convert("RGBA")
@@ -202,7 +207,6 @@ def text_with_wrapped(
                 if emj_img := emj_map.get(node.content):
                     image.paste(emj_img, (cur_x - x_diff, y - y_diff), emj_img)
                 else:
-                    # 忽略组合表情的修饰符，只渲染第一个字符
                     draw.text((cur_x, y), node.content[0], font=font, fill=fill)
                 cur_x += int(font_size)
             else:
