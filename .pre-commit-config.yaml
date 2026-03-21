@@ -18,7 +18,7 @@ repos:
   #     - id: typos
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.8
+    rev: v0.15.7
     hooks:
       - id: ruff-check
         args: [--fix, --exit-non-zero-on-fix]
@@ -29,3 +29,4 @@ repos:
     hooks:
       - id: uv-lock
       - id: uv-sync
+        stages: [post-checkout]

@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "fllesser", email = "fllessive@gmail.com" }]
-dependencies = ["cairosvg>=2.8.2", "emoji>=2.15.0", "pillow>=11.0.0"]
+dependencies = ["cairosvg>=2.9.0", "emoji>=2.15.0", "pillow>=11.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/fllesser/emosvg"
@@ -15,11 +15,9 @@ Repository = "https://github.com/fllesser/emosvg.git"
 
 [dependency-groups]
 dev = [
-  "httpx>=0.28.1, <1.0.0",
-  "bump-my-version>=1.2.4",
-  "poethepoet>=0.36.0",
-  "ruff>=0.14.8,<1.0.0",
-  "apilmoji[tqdm]>=0.2.1",
+  "bump-my-version>=1.2.7",
+  "poethepoet>=0.42.1",
+  "ruff>=0.15.7,<1.0.0",
   { include-group = "test" },
 ]
 test = [
