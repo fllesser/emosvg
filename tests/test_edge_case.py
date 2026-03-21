@@ -19,13 +19,17 @@ def test_other_font():
 
     # test ImageFont
     font = ImageFont.load_default_imagefont()
-    pytest.raises(ValueError, emosvg.get_font_height, font)
-    pytest.raises(ValueError, emosvg.get_font_size, font)
+    with pytest.raises(ValueError, match="Not support ImageFont"):
+        emosvg.get_font_height(font)
+    with pytest.raises(ValueError, match="Not support ImageFont"):
+        emosvg.get_font_size(font)
 
     # test transparent font
     font = ImageFont.TransposedFont(font)
-    pytest.raises(ValueError, emosvg.get_font_height, font)
-    pytest.raises(ValueError, emosvg.get_font_size, font)
+    with pytest.raises(ValueError, match="Not support ImageFont"):
+        emosvg.get_font_height(font)
+    with pytest.raises(ValueError, match="Not support ImageFont"):
+        emosvg.get_font_size(font)
 
 
 def test_no_text(font_path):
